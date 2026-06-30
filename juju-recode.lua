@@ -260,7 +260,7 @@
 
                     local replacements = {}
 
-                    for _, v in gc do
+                    for _, v in ipairs(gc) do
                         if typeof(v) == "table" and #v < 2500 then
                             local index = table.find(v, old)
 
@@ -272,8 +272,10 @@
 
                     hookfunction(old, replace)
 
-                    for _, v in replacements do
-                        rawset(_, v, fake_old)
+                    for tab, idx in pairs(replacements) do
+                        pcall(function()
+                            rawset(tab, idx, fake_old)
+                        end)
                     end
 
                     return fake_old
@@ -27832,6 +27834,20 @@
                 elseif input.UserInputType == Enum.UserInputType.MouseButton2 then
                     selectedTarget = nil
                 end
+            end)
+
+            -- show/hide HUD when ragebot target changes
+            create_connection(signals["on_ragebot_target_changed"], function(targetData)
+                if targetData and targetData[3] then
+                    local model = targetData[3]
+                    if model and model:FindFirstChildOfClass("Humanoid") and model:FindFirstChild("HumanoidRootPart") then
+                        currentTarget = model
+                        isTweeningOut = false
+                        updateHUD(model, targetData == selectedTarget or targetData == ragebot_target)
+                        return
+                    end
+                end
+                hideHUD()
             end)
 
             RunService.Heartbeat:Connect(function()
