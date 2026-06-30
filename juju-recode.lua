@@ -949,7 +949,7 @@
             local juju_text = drawing_proxy["new"]("Text", {
                 ["Font"] = 1,
                 ["Color"] = color3_fromrgb(255, 255, 255),
-                ["Text"] = "juju recode",
+                ["Text"] = "juju",
                 ["Parent"] = logo,
                 ["Position"] = udim2_new(1, 5, 0, 3),
                 ["Size"] = 14,
